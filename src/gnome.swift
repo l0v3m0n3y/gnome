@@ -38,6 +38,7 @@ public class GnomeSite {
 
     private let api = "https://www.gnome.org"
     private let apiExtensions = "https://extensions.gnome.org"
+    private let apiFlathub = "https://flathub.org/api/v2"
     private let apiDiscourse = "https://discourse.gnome.org"
 
     private var headers: [String: String]
@@ -116,5 +117,17 @@ public class GnomeSite {
 
     public func getSupportedLanguages() async throws -> Any {
         try await fetchJSON(from: "\(api)/languages.json")
+    }
+    |
+    public func searchInFlathub(locale: String = "en-GB", query: String, hits_per_page: Int = 21,page: Int = 1) async throws -> Any {
+        guard let url = URL(string: "\(apiFlathub)/search?locale=\(locale)") else {
+            throw NSError(domain: "Invalid URL", code: -1)
+        }
+    
+        let body: [String: Any] = ["query": query, "filters": "[]", "hits_per_page": hits_per_page, "page": page]
+
+        let bodyData = try JSONSerialization.data(withJSONObject: body, options: [])
+        
+        return try await fetchJSON(from: url.absoluteString,method: .post,body: bodyData,queryParameters: nil)
     }
 }
