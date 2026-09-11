@@ -118,7 +118,7 @@ public class GnomeSite {
     public func getSupportedLanguages() async throws -> Any {
         try await fetchJSON(from: "\(api)/languages.json")
     }
-    |
+
     public func searchInFlathub(locale: String = "en-GB", query: String, hits_per_page: Int = 21,page: Int = 1) async throws -> Any {
         guard let url = URL(string: "\(apiFlathub)/search?locale=\(locale)") else {
             throw NSError(domain: "Invalid URL", code: -1)
