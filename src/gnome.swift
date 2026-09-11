@@ -40,6 +40,7 @@ public class GnomeSite {
     private let apiExtensions = "https://extensions.gnome.org"
     private let apiFlathub = "https://flathub.org/api/v2"
     private let apiDiscourse = "https://discourse.gnome.org"
+    private let apiGTK = "https://docs.gtk.org/gtk4"
 
     private var headers: [String: String]
 
@@ -129,5 +130,9 @@ public class GnomeSite {
         let bodyData = try JSONSerialization.data(withJSONObject: body, options: [])
         
         return try await fetchJSON(from: url.absoluteString,method: .post,body: bodyData,queryParameters: nil)
+    }
+
+    public func getGTKDoc() async throws -> Any {
+        try await fetchJSON(from: "\(apiGTK)/index.json")
     }
 }
